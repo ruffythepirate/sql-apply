@@ -21,7 +21,7 @@ These features are not yet implemented, but the aim is to:
 
 ## Conventions
 
-The project aims at staying true to the original flyway project. For this the name convention consists of:
+The project aims at staying true to the flyway project mentioned above. For this the name convention consists of:
 
 * Prefix: Defaults to V.
 * Version: Dots or underscores separated in as many parts as one likes.
@@ -29,7 +29,7 @@ The project aims at staying true to the original flyway project. For this the na
 * Description: A text with words separated by underscores or spaces.
 * Suffix: Defaults to .sql.
 
-For example, the following are all valid Flyway scripts:
+For example, the following are all valid migration scripts:
 
 * V1__some_description.sql 
 * V15.003__some_other_script.sql
