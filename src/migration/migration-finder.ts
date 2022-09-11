@@ -7,7 +7,11 @@ export async function findMigrations(paths: string[]): Promise<MigrationDefiniti
     }
     const files = await Promise.all(paths.map(path => findFilesInPath(path)));
 
-    return files.flat().map(file => MigrationDefinition.parseMigration(file));
+
+    return files
+        .flat()
+        .map(file => MigrationDefinition.parseMigration(file))
+        .sort((a, b) => a.version.localeCompare(b.version));
 }
 
 async function findFilesInPath(path: string): Promise<string[]>
