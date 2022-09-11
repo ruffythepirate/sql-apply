@@ -5,6 +5,7 @@
   "main": "build/index.js",
   "scripts": {
     "test": "jest",
+    "test:watch": "jest --watch",
     "start:dev": "nodemon",
     "start": "node run build && node build",
     "lint": "eslint . --ext .ts",
