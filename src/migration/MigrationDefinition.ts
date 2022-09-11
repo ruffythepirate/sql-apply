@@ -3,10 +3,10 @@ import {isNameValid} from "./name-convention";
 
 export class MigrationDefinition {
     path: string;
-    version: number;
+    version: string;
     description: string;
 
-    constructor(path: string, version: number, description: string) {
+    constructor(path: string, version: string, description: string) {
         this.path = path;
         this.version = version;
         this.description = description;
@@ -21,7 +21,7 @@ export class MigrationDefinition {
             throw new Error(`Invalid migration name: ${filename}`);
         }
         const [version, description] = filename.split("__");
-        return new MigrationDefinition(path, parseInt(version.substring(1)), removeSuffix(description));
+        return new MigrationDefinition(path, version.substring(1), removeSuffix(description));
     }
 }
 

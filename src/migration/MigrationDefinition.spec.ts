@@ -12,6 +12,6 @@ it(`should parse valid filename`, () => {
     const path = "src/migration/V1__Create_table.sql"
     const migration = MigrationDefinition.parseMigration(path);
     expect(migration.path).toBe(path);
-    expect(migration.version).toBe(1);
+    expect(migration.version).toBe('1');
     expect(migration.description).toBe("Create_table");
 });
