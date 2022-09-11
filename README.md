@@ -38,7 +38,8 @@ The library will enforce that versions are monotonically increasing starting at 
 
 ## Requirements
 
-* Node and npm
+* Node 11 or higher
+* npm
 * Postgres
 
 ## Usage
