@@ -1,7 +1,7 @@
 import {Client} from "pg";
 
 export async function ensureDatabaseExists(client: Client, databaseName: string) {
-    let response = await client.query(`SELECT 1
+    const response = await client.query(`SELECT 1
                                        FROM pg_database
                                        WHERE datname = '${databaseName}'`)
     if (response.rowCount === 0) {
