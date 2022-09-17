@@ -1,5 +1,6 @@
 import {isNameValid} from "./name-convention";
 
+import * as fs from "fs";
 
 export class MigrationDefinition {
     path: string;
@@ -22,6 +23,19 @@ export class MigrationDefinition {
         }
         const [version, description] = filename.split("__");
         return new MigrationDefinition(path, version.substring(1), removeSuffix(description));
+    }
+
+    async verifyExists(): Promise<boolean> {
+        try {
+            await fs.promises.readFile(this.path);
+            return true;
+        } catch( e ) {
+            return false;
+        }
+    }
+
+    async readContent(): Promise<string> {
+        return await fs.promises.readFile(this.path).then(r => r.toString());
     }
 }
 

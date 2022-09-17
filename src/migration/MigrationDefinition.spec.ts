@@ -1,5 +1,7 @@
 import {MigrationDefinition} from "./MigrationDefinition";
 
+import * as fs from "fs";
+
 it(`should throw when path is invalid`, () => {
     expect(() => MigrationDefinition.parseMigration("")).toThrowError("Invalid path");
 });
@@ -15,3 +17,24 @@ it(`should parse valid filename`, () => {
     expect(migration.version).toBe('1');
     expect(migration.description).toBe("Create_table");
 });
+
+it('should return true if file exists', () => {
+    const path = "src/migration/V1__Create_table.sql"
+    jest.spyOn(fs.promises, 'readFile').mockResolvedValue(Promise.resolve("content"));
+    const migration = MigrationDefinition.parseMigration(path);
+    expect(migration.verifyExists()).resolves.toBe(true);
+})
+
+it('should return false if file doesnt exists', () => {
+    const path = "src/migration/V1__Create_table.sql"
+    jest.spyOn(fs.promises, 'readFile').mockResolvedValue(Promise.reject("failure"));
+    const migration = MigrationDefinition.parseMigration(path);
+    expect(migration.verifyExists()).resolves.toBe(false);
+})
+
+it('should return content of file', () => {
+    const path = "src/migration/V1__Create_table.sql"
+    jest.spyOn(fs.promises, 'readFile').mockResolvedValue(Promise.resolve("content"));
+    const migration = MigrationDefinition.parseMigration(path);
+    expect(migration.readContent()).resolves.toBe("content");
+})
