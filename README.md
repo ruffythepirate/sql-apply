@@ -1,3 +1,7 @@
+![Node.js CI](https://github.com/ruffythepirate/sql-apply/workflows/Node.js%20CI/badge.svg)
+[![codecov](https://codecov.io/gh/ruffythepirate/sql-apply/branch/master/graph/badge.svg)](https://codecov.io/gh/ruffythepirate/sql-apply)
+
+
 # SQL Apply
 
 This project aims at doing what the already existing [flyway](https://flywaydb.org/documentation/) project is doing in the JVM world. It allows you to define one or multiple directories where you can create SQL files. Upon applying these files the library will check if the files have already been applied before (by looking into a migrations table in the DB). If they have not yet been applied they will be executed sequantially.

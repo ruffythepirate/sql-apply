@@ -6,10 +6,13 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:coverage": "npx jest --coverage src && npm run test:badge",
+    "test:badge": "npx lcov-badge-generator -o coverage/badge.svg coverage/lcov.info",
     "start:dev": "nodemon",
     "start": "node run build && node build",
-    "lint": "eslint . --ext .ts",
-    "build": "rimraf build && tsc"
+    "lint": "npx eslint . --ext .ts",
+    "lint:fix": "npx eslint . --ext .ts --fix",
+    "build": "npx rimraf build && npx tsc"
   },
   "author": "",
   "license": "ISC",
