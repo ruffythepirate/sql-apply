@@ -19,4 +19,4 @@ async function testRun() {
     console.log(`Current migrations: ${migrations.length}`);
 }
 
-testRun().then(r => console.log('Done'));
+testRun().then(() => console.log('Done'));

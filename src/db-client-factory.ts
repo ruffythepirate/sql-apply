@@ -1,5 +1,4 @@
 import {Client} from "pg";
-import exp from "constants";
 
 export async function connectToDb(databaseUrl: string, username: string, password: string) {
   const client = new Client({
