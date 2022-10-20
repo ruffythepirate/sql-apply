@@ -1,6 +1,7 @@
 import {isNameValid} from "./name-convention";
 
 import * as fs from "fs";
+import {Client} from "pg";
 
 export class MigrationDefinition {
     path: string;
@@ -36,6 +37,11 @@ export class MigrationDefinition {
 
     async readContent(): Promise<string> {
         return await fs.promises.readFile(this.path).then(r => r.toString());
+    }
+
+    insertStatement(client: Client): Promise<any> {
+        return client.query(`INSERT INTO migrations (version, description) VALUES ($1, $2)`,
+            [this.version, this.description]);
     }
 }
 

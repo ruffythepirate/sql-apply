@@ -1,4 +1,5 @@
 import {MigrationDefinition} from "./MigrationDefinition";
+import {Client} from "pg";
 
 import * as fs from "fs";
 
@@ -38,3 +39,13 @@ it('should return content of file', () => {
     const migration = MigrationDefinition.parseMigration(path);
     expect(migration.readContent()).resolves.toBe("content");
 })
+
+it('should perform insert statement', () => {
+    const path = "src/migration/V1__Create_table.sql"
+    const migration = MigrationDefinition.parseMigration(path);
+    const client = {
+        query: jest.fn()
+    } as unknown as Client;
+    migration.insertStatement(client)
+    expect(client.query).toBeCalledTimes(1);
+});
