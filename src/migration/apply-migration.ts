@@ -1,4 +1,4 @@
-import {logger} from "../common/logger";
+import logger = require('../common/logger');
 import {Client} from 'pg';
 import {MigrationDefinition} from "./MigrationDefinition";
 import {setup} from "./setup";

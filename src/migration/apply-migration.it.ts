@@ -8,7 +8,7 @@ import {Client} from "pg";
 
 import { applyMigration } from "./apply-migration";
 
-import {logger} from "../common/logger";
+import logger = require("../common/logger");
 
 let startedContainer: StartedTestContainer
 
