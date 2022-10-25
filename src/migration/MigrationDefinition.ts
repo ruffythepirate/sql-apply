@@ -35,12 +35,12 @@ export class MigrationDefinition {
         }
     }
 
-    async readContent(): Promise<string> {
+    async getContent(): Promise<string> {
         return await fs.promises.readFile(this.path).then(r => r.toString());
     }
 
-    insertStatement(client: Client): Promise<any> {
-        return client.query(`INSERT INTO migrations (version, description) VALUES ($1, $2)`,
+    async insertStatement(client: Client): Promise<any> {
+        return await client.query(`INSERT INTO migrations (version, description) VALUES ($1, $2)`,
             [this.version, this.description]);
     }
 }

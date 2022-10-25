@@ -37,7 +37,7 @@ it('should return content of file', () => {
     const path = "src/migration/V1__Create_table.sql"
     jest.spyOn(fs.promises, 'readFile').mockResolvedValue(Promise.resolve("content"));
     const migration = MigrationDefinition.parseMigration(path);
-    expect(migration.readContent()).resolves.toBe("content");
+    expect(migration.getContent()).resolves.toBe("content");
 })
 
 it('should perform insert statement', () => {
