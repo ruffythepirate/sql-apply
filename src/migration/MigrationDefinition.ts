@@ -40,7 +40,7 @@ export class MigrationDefinition {
     }
 
     async insertStatement(client: Client): Promise<void> {
-        await client.query(`INSERT INTO migrations (version, description) VALUES ($1, $2)`,
+        await client.query(`INSERT INTO migrations (version, description, run_on) VALUES ($1, $2, current_timestamp)`,
             [this.version, this.description]);
     }
 }

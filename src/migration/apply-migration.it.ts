@@ -48,13 +48,13 @@ it('should apply migration', async () => {
     const migration = MigrationDefinition.parseMigration("./example-migrations/dev/V1__Create_table.sql")
     await applyMigration(migration, client);
 
-    const result = await client.query('SELECT * FROM migration');
+    const result = await client.query('SELECT * FROM migrations');
     expect(result.rows).toHaveLength(1);
     expect(result.rows[0].version).toBe('1');
     expect(result.rows[0].description).toBe('Create_table');
-    expect(result.rows[0].applied_at).not.toBe(null);
-    expect(result.rows[0].applied_at).not.toBe(undefined);
-    expect(result.rows[0].applied_at).not.toBe('');
+    expect(result.rows[0].run_on).not.toBe(null);
+    expect(result.rows[0].run_on).not.toBe(undefined);
+    expect(result.rows[0].run_on).not.toBe('');
 
     await client.end();
 });

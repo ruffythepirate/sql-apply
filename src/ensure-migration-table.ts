@@ -14,7 +14,8 @@ export async function ensureMigrationTable(client: Client): Promise<void> {
     logger.info('Ensuring migration table exists');
     await client.query(`CREATE TABLE IF NOT EXISTS migrations (
         id SERIAL PRIMARY KEY,
-        name VARCHAR ( 255 ) NOT NULL, 
+        version VARCHAR(255) NOT NULL,
+        description VARCHAR ( 255 ) NOT NULL, 
         run_on TIMESTAMP NOT NULL );`)
     logger.info('Migration table now exists');
 }

@@ -30,7 +30,7 @@ export async function applyMigration(
         logger.info('Committing transaction');
         client.query('COMMIT');
     } catch (error) {
-        logger.error('Migration failed', error);
+        logger.error(`Migration failed: ${error}`);
         client.query('ROLLBACK');
     }
 }
