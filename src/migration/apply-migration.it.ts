@@ -1,7 +1,5 @@
 import { 
-  TestContainer, 
   StartedTestContainer, 
-  StoppedTestContainer, 
   GenericContainer
 } from "testcontainers";
 
@@ -10,7 +8,7 @@ import {Client} from "pg";
 
 import { applyMigration } from "./apply-migration";
 
-const logger = require('../common/logger');
+import {logger} from "../common/logger";
 
 let startedContainer: StartedTestContainer
 

@@ -1,5 +1,5 @@
 import {Client} from "pg";
-const logger = require('./common/logger');
+import {logger} from "./common/logger";
 
 export async function ensureDatabaseExists(client: Client, databaseName: string): Promise<void> {
     const response = await client.query(`SELECT 1

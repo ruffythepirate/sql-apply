@@ -39,8 +39,8 @@ export class MigrationDefinition {
         return await fs.promises.readFile(this.path).then(r => r.toString());
     }
 
-    async insertStatement(client: Client): Promise<any> {
-        return await client.query(`INSERT INTO migrations (version, description) VALUES ($1, $2)`,
+    async insertStatement(client: Client): Promise<void> {
+        await client.query(`INSERT INTO migrations (version, description) VALUES ($1, $2)`,
             [this.version, this.description]);
     }
 }

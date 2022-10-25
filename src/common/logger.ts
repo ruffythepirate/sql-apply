@@ -1,3 +1,3 @@
-const pino = require('pino');
+import { pino } from 'pino';
 
 module.exports = pino({});

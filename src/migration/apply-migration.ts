@@ -1,4 +1,4 @@
-const logger = require('../common/logger');
+import {logger} from "../common/logger";
 import {Client} from 'pg';
 import {MigrationDefinition} from "./MigrationDefinition";
 import {setup} from "./setup";
@@ -32,6 +32,6 @@ export async function applyMigration(
     } catch (error) {
         logger.error('Migration failed', error);
         client.query('ROLLBACK');
-    };
+    }
 }
 
