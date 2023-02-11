@@ -5,9 +5,9 @@
   "main": "build/index.js",
   "scripts": {
     "docs": "npx typedoc src",
-    "test": "jest",
-    "test:it": "jest -c jest.it.config.js",
-    "test:watch": "jest --watch",
+    "test": "npx jest",
+    "test:it": "npx jest -c jest.it.config.js",
+    "test:watch": "npx jest --watch",
     "test:coverage": "npx jest --coverage src && npm run test:badge",
     "test:badge": "npx lcov-badge-generator -o coverage/badge.svg coverage/lcov.info",
     "start:dev": "nodemon",
