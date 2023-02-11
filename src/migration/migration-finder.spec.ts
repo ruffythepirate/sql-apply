@@ -1,11 +1,11 @@
-import {findMigrations} from "./migration-finder";
+import {findMigrationsRelativeToCwd} from "./migration-finder";
 import {MigrationDefinition} from "./MigrationDefinition";
 import * as fs from "fs";
 
 // jest.mock("fs")
 
 it('should throw when no path is provided', async () => {
-    await expect(findMigrations([])).rejects.toThrowError("No path provided");
+    await expect(findMigrationsRelativeToCwd([])).rejects.toThrowError("No path provided");
 })
 
 it('should return all migration files in target folder', async () => {
@@ -17,7 +17,7 @@ it('should return all migration files in target folder', async () => {
         ]
     )
 
-    await expect(findMigrations(["src/migration"])).resolves.toEqual([
+    await expect(findMigrationsRelativeToCwd(["src/migration"])).resolves.toEqual([
         new MigrationDefinition("src/migration/V1__Create_table.sql", '1', "Create_table"),
         new MigrationDefinition("src/migration/V2__Create_table.sql", '2', "Create_table"),
         new MigrationDefinition("src/migration/V3__Create_table.sql", '3', "Create_table"),
@@ -33,7 +33,7 @@ it('return migrations sorted by version', async () => {
         ]
     )
 
-    await expect(findMigrations(["src/migration"])).resolves.toEqual([
+    await expect(findMigrationsRelativeToCwd(["src/migration"])).resolves.toEqual([
         new MigrationDefinition("src/prod/V1__Create_table.sql", '1', "Create_table"),
         new MigrationDefinition("src/common/V2__Create_table.sql", '2', "Create_table"),
         new MigrationDefinition("src/prod/V3__Create_table.sql", '3', "Create_table"),

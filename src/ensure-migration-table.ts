@@ -1,4 +1,5 @@
 import {Client} from "pg";
+import {MigrationDefinition} from "./migration/MigrationDefinition";
 const logger = require('./common/logger');
 
 export async function ensureDatabaseExists(client: Client, databaseName: string): Promise<void> {
@@ -20,8 +21,8 @@ export async function ensureMigrationTable(client: Client): Promise<void> {
     logger.info('Migration table now exists');
 }
 
-export async function getAllMigrations(client: Client): Promise<string[]> {
-    return await client.query(`SELECT *
+export async function getMigrationsDoneInDB(client: Client): Promise<MigrationDefinition[]> {
+    let query = await client.query(`SELECT *
                                FROM migrations;`)
-        .then((result) => result.rows);
+    return query.rows.map(row => new MigrationDefinition('', row.version, row.description)
 }
