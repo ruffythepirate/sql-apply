@@ -7,7 +7,9 @@ import * as fs from "fs";
  * For example 'sql/migrations' is a valid path, but '/sql/migrations' is not.
  */
 export async function findMigrationsRelativeToCwd(paths: string[]): Promise<MigrationDefinition[]> {
+    
     const absolutePaths = paths.map(path => `${process.cwd()}/${path}`);
+
     return findMigrationsAbsolutPaths(absolutePaths);
 }
 

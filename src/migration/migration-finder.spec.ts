@@ -11,31 +11,36 @@ it('should throw when no path is provided', async () => {
 it('should return all migration files in target folder', async () => {
     fs.promises.readdir = jest.fn().mockResolvedValue(
         [
-        {name: "src/migration/V1__Create_table.sql", isFile: () => true},
-        {name: "src/migration/V2__Create_table.sql", isFile: () => true},
-        {name: "src/migration/V3__Create_table.sql", isFile: () => true},
+        {name: "V1__Create_table.sql", isFile: () => true},
+        {name: "V2__Create_table.sql", isFile: () => true},
+        {name: "V3__Create_table.sql", isFile: () => true},
         ]
     )
 
     await expect(findMigrationsRelativeToCwd(["src/migration"])).resolves.toEqual([
-        new MigrationDefinition("src/migration/V1__Create_table.sql", '1', "Create_table"),
-        new MigrationDefinition("src/migration/V2__Create_table.sql", '2', "Create_table"),
-        new MigrationDefinition("src/migration/V3__Create_table.sql", '3', "Create_table"),
+        new MigrationDefinition(absolutePath("src/migration/V1__Create_table.sql"), '1', "Create_table"),
+        new MigrationDefinition(absolutePath("src/migration/V2__Create_table.sql"), '2', "Create_table"),
+        new MigrationDefinition(absolutePath("src/migration/V3__Create_table.sql"), '3', "Create_table"),
         ]);
 })
 
 it('return migrations sorted by version', async () => {
     fs.promises.readdir = jest.fn().mockResolvedValue(
         [
-            {name: "src/common/V2__Create_table.sql", isFile: () => true},
-        {name: "src/prod/V1__Create_table.sql", isFile: () => true},
-        {name: "src/prod/V3__Create_table.sql", isFile: () => true},
+            {name: "V2__Create_table.sql", isFile: () => true},
+        {name: "V1__Create_table.sql", isFile: () => true},
+        {name: "V3__Create_table.sql", isFile: () => true},
         ]
     )
 
-    await expect(findMigrationsRelativeToCwd(["src/migration"])).resolves.toEqual([
-        new MigrationDefinition("src/prod/V1__Create_table.sql", '1', "Create_table"),
-        new MigrationDefinition("src/common/V2__Create_table.sql", '2', "Create_table"),
-        new MigrationDefinition("src/prod/V3__Create_table.sql", '3', "Create_table"),
+    await expect(findMigrationsRelativeToCwd(["src"])).resolves.toEqual([
+        new MigrationDefinition(absolutePath("src/V1__Create_table.sql"), '1', "Create_table"),
+        new MigrationDefinition(absolutePath("src/V2__Create_table.sql"), '2', "Create_table"),
+        new MigrationDefinition(absolutePath("src/V3__Create_table.sql"), '3', "Create_table"),
         ]);
 })
+
+function absolutePath(path: string) {
+
+    return `${process.cwd()}/${path}`;
+}
