@@ -11,7 +11,7 @@ export async function applyMigration(
     try {
         await setup(client);
 
-        logger.info(`Applying migration ${migration.version} - ${migration.description}`);
+        logger.info(`Applying migration ${migration.version} - ${migration.description}. File path: ${migration.path}`);
         // 1. We read the migration file
         const up = await migration.getContent();
         // 2. We create a new transaction
@@ -28,10 +28,10 @@ export async function applyMigration(
         await migration.insertStatement(client);
 
         logger.info('Committing transaction');
-        client.query('COMMIT');
+        await client.query('COMMIT');
     } catch (error) {
         logger.error(`Migration failed: ${error}`);
-        client.query('ROLLBACK');
+        await client.query('ROLLBACK');
     }
 }
 

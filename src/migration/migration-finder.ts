@@ -18,8 +18,7 @@ export async function findMigrationsAbsolutPaths(paths: string[]): Promise<Migra
     if (paths.length === 0) {
         throw new Error("No path provided");
     }
-    const files = await Promise.all(paths.map(path => findFilesInPath(path)));
-
+    const files = await Promise.all(paths.map(path => findFilesInPath(path).then(files => files.map(file => `${path}/${file}`))));
 
     return files
         .flat()

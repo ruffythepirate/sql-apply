@@ -35,7 +35,6 @@ afterAll(async () => {
 
 
 it('should apply migration', async () => {
-
     const client = new Client({
         user: 'user',
         host: 'localhost',
