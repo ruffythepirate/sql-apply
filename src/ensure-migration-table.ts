@@ -22,7 +22,7 @@ export async function ensureMigrationTable(client: Client): Promise<void> {
 }
 
 export async function getMigrationsDoneInDB(client: Client): Promise<MigrationDefinition[]> {
-    let query = await client.query(`SELECT *
+    const query = await client.query(`SELECT *
                                FROM migrations;`)
-    return query.rows.map(row => new MigrationDefinition('', row.version, row.description)
+    return query.rows.map(row => new MigrationDefinition('', row.version, row.description));
 }

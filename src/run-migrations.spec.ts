@@ -1,7 +1,6 @@
 import { runMigrations } from './run-migrations';
-import {ensureDatabaseExists, ensureMigrationTable, getMigrationsDoneInDB} from "./ensure-migration-table";
+import {ensureDatabaseExists, getMigrationsDoneInDB} from "./ensure-migration-table";
 import {findMigrationsRelativeToCwd} from "./migration/migration-finder";
-import {Client} from 'pg';
 import {MigrationDefinition} from './migration/MigrationDefinition';
 import {applyMigration} from './migration/apply-migration';
 
@@ -21,7 +20,7 @@ jest.mock('./migration/apply-migration', () => ({
 
 describe('runMigrations', () => {
 
-  let client = {
+  const client = {
     query: jest.fn(),
   } as any;
 
