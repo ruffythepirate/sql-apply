@@ -23,6 +23,8 @@ These features are not yet implemented, but the aim is to:
 * Ensuring that scripts are applied in an ordered manner according to naming convention.
 * Migrations scripts will be written in SQL.
 
+For full information please refer to the [API Documentation](https://ruffythepirate.github.io/sql-apply/).
+
 ## Conventions
 
 The project aims at staying true to the flyway project mentioned above. For this the name convention consists of:
