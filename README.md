@@ -8,7 +8,7 @@ This project aims at doing what the already existing [flyway](https://flywaydb.o
 
 There are already other libraries available for Node that helps you with performing DB migrations, why create a new one? Because I want a library that exists that allows you to write the migration scripts in pure SQL (no need for every function / feature in SQL to get a corresponding translation written in JS). I also want the migrations to be executable from code. This way it's very low effort to making sure that all environments (local / staging / prod) are all being kept up to date.
 
-Is this difficult? I don't know, perhaps it is. We'll find out. At least I'll start and see where I land.
+Is this difficult? I don't know, perhaps it is. We'll find out. At least I'll start and see where I land. This is still a young project, so don't hesitate to report Issues if you find them or to come with suggestion on how this could be done better. As a first step it's expected to support postgres, in later stages there's no reason why functionality can't be extended to support other SQL databases.
 
 ## Limitations
 
@@ -47,14 +47,6 @@ The library will enforce that versions are monotonically increasing starting at 
 * Node 11 or higher
 * npm
 * Postgres
-
-## Usage
-
-If you don't already have Postgres running locally:
-* run `docker-compose up` in the root folder.
-
-Then run:
-* npm run start:dev
 
 ## License
 
