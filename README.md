@@ -10,6 +10,10 @@ There are already other libraries available for Node that helps you with perform
 
 Is this difficult? I don't know, perhaps it is. We'll find out. At least I'll start and see where I land. This is still a young project, so don't hesitate to report Issues if you find them or to come with suggestion on how this could be done better. As a first step it's expected to support postgres, in later stages there's no reason why functionality can't be extended to support other SQL databases.
 
+## Installation
+
+This project is published at npmjs [here](https://www.npmjs.com/package/sql-apply). You can install it using `npm i -S sql-apply`.
+
 ## Limitations
 
 This project currently uses `IF NOT EXISTS` syntax which means it's only compatible with Postgres 9.1 and upward.
