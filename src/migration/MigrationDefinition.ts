@@ -55,7 +55,7 @@ export async function ensureMigrationTable(client: Client, migrationOptions: Mig
     await client.query(`CREATE SCHEMA IF NOT EXISTS ${migrationOptions.migrationTableSchema};`);
     await client.query(`CREATE TABLE IF NOT EXISTS ${migrationOptions.migrationTableSchema}.${migrationOptions.migrationTable} (
         id SERIAL PRIMARY KEY,
-        version VARCHAR(255) NOT NULL,
+        version VARCHAR(255) NOT NULL UNIQUE,
         description VARCHAR ( 255 ) NOT NULL, 
         run_on TIMESTAMP NOT NULL );`)
     logger.info('Migration table now exists');

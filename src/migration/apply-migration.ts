@@ -34,6 +34,7 @@ export async function applyMigration(
     } catch (error) {
         logger.error(`Migration failed: ${error}`);
         await client.query('ROLLBACK');
+        throw error;
     }
 }
 

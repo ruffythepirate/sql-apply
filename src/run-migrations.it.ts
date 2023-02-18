@@ -49,6 +49,12 @@ describe("Flyway Migration", () => {
     const result = await client.query("SELECT * FROM information_schema.tables where table_name = 'custom_persons'");
     expect(result.rows.length).toBe(1);
   });
+
+  it("should not allow multiple migratoins with same version", async () => {
+    const options = populateDefaultOptions({ migrationTableSchema: 'duplicate'});
+    await expect(runMigrations(client, ['example-migrations/duplicate'], options))
+      .rejects.toThrowError();
+  });
 });
 
 
