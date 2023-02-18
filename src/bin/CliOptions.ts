@@ -27,6 +27,17 @@ export function withDefaultOptions(cliOptions: CliOptions): CliOptions {
   };
 }
 
+export function withEnvironmentOptions(cliOptions: CliOptions, environment: any): CliOptions {
+  const copy = Object.assign({}, cliOptions);
+  copy.host = cliOptions.host || environment.PGHOST;
+  copy.password = cliOptions.password || environment.PGPASSWORD;
+  copy.user = cliOptions.user || environment.PGUSER;
+  copy.port = cliOptions.port || environment.PGPORT;
+  copy.database = cliOptions.database || environment.PGDATABASE;
+  return copy;
+}
+
+
 export function parseCliArgs(args: any): CliOptions {
   return {
     host: args.host,

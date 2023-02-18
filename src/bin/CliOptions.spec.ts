@@ -1,4 +1,4 @@
-import {parseCliArgs, toMigrationOptions, withDefaultOptions} from "./CliOptions";
+import {parseCliArgs, toMigrationOptions, withDefaultOptions, withEnvironmentOptions} from "./CliOptions";
 
 describe('CliOptions', () => {
 
@@ -55,6 +55,44 @@ describe('CliOptions', () => {
       migrationTable: 'my-migrations-table',
       migrationTableSchema: 'my-migrations-schema',
       timeoutInSeconds: 123,
+    });
+  });
+
+  describe('withEnvironmentOptions', () => {
+    it('should add environment options if nothing defined', () => {
+      const options = {};
+      const environment = {
+        PGHOST: 'my-host',
+        PGPASSWORD: 'my-password',
+        PGDATABASE: 'my-db',
+        PGUSER: 'my-user',
+        PGPORT: 123,
+      };
+
+      const optionsWithEnvironment = withEnvironmentOptions(options, environment);
+
+      expect(optionsWithEnvironment).toMatchObject({
+        host: 'my-host',
+        password: 'my-password',
+        database: 'my-db',
+        user: 'my-user',
+        port: 123,
+      });
+    });
+
+    it('should not override cli options', () => {
+      const options = withDefaultOptions({});
+      const environment = {
+        PGHOST: 'my-host',
+        PGPASSWORD: 'my-password',
+        PGDATABASE: 'my-db',
+        PGUSER: 'my-user',
+        PGPORT: 123,
+      };
+
+      const optionsWithEnvironment = withEnvironmentOptions(options, environment);
+
+      expect(optionsWithEnvironment).toMatchObject(options);
     });
   });
 });

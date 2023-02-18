@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
-import {parse} from 'path';
 import yargs from 'yargs';
-import {parseCliArgs, withDefaultOptions} from './CliOptions';
+import {parseCliArgs, withDefaultOptions, withEnvironmentOptions} from './CliOptions';
 import {performCliMigration} from './perform-cli-migration';
 
 console.log('Running migrations...');
@@ -50,6 +49,7 @@ const args = yargs(process.argv.slice(2))
 console.log('Parsed args:', args);
 
 let cliOptions = parseCliArgs(args);
+cliOptions = withEnvironmentOptions(cliOptions, process.env);
 cliOptions = withDefaultOptions(cliOptions);
 
 console.log('Running migrations with options:', cliOptions);
