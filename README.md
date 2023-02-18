@@ -14,6 +14,10 @@ Is this difficult? I don't know, perhaps it is. We'll find out. At least I'll st
 
 This project is published at npmjs [here](https://www.npmjs.com/package/sql-apply). You can install it using `npm i -S sql-apply`.
 
+## Execution
+
+This project can both be used from inside nodejs projects by saving it as a dependency and then running `runMigrations` (don't forget to await the result). It can also be used from the command line through `npx sql-apply migrate -m <directory-with-migrations>`. Of course additional parameters exist, just run `npx sql-apply` to see available options.
+
 ## Limitations
 
 This project currently uses `IF NOT EXISTS` syntax which means it's only compatible with Postgres 9.1 and upward.
