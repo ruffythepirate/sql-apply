@@ -2,6 +2,7 @@ import {isNameValid} from "./name-convention";
 
 import * as fs from "fs";
 import {Client} from "pg";
+import {MigrationOptions} from "../options/MigrationOptions";
 
 export class MigrationDefinition {
     path: string;
@@ -39,8 +40,10 @@ export class MigrationDefinition {
         return await fs.promises.readFile(this.path).then(r => r.toString());
     }
 
-    async insertStatement(client: Client): Promise<void> {
-        await client.query(`INSERT INTO migrations (version, description, run_on) VALUES ($1, $2, current_timestamp)`,
+    async insertStatement(client: Client, migrationOptions: MigrationOptions): Promise<void> {
+        const tableFullName = `${migrationOptions.migrationTableSchema}.${migrationOptions.migrationTable}`;
+        console.log('inserting migration to table', tableFullName);
+        await client.query(`INSERT INTO ${tableFullName} (version, description, run_on) VALUES ($1, $2, current_timestamp)`,
             [this.version, this.description]);
     }
 }

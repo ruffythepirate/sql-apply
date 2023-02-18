@@ -2,6 +2,7 @@ import {MigrationDefinition} from "./MigrationDefinition";
 import {Client} from "pg";
 
 import * as fs from "fs";
+import {populateDefaultOptions} from "../options/populate-default-options";
 
 it(`should throw when path is invalid`, () => {
     expect(() => MigrationDefinition.parseMigration("")).toThrowError("Invalid path");
@@ -46,6 +47,6 @@ it('should perform insert statement', () => {
     const client = {
         query: jest.fn()
     } as unknown as Client;
-    migration.insertStatement(client)
+    migration.insertStatement(client, populateDefaultOptions({}));
     expect(client.query).toBeCalledTimes(1);
 });

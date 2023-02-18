@@ -1,11 +1,13 @@
 const logger = require('../common/logger');
 import {Client} from 'pg';
+import {MigrationOptions} from '../options/MigrationOptions';
 import {MigrationDefinition} from "./MigrationDefinition";
 import {setup} from "./setup";
 
 export async function applyMigration(
     migration: MigrationDefinition,
     client: Client,
+    migrationOptions: MigrationOptions
 ): Promise<void> {
 
     try {
@@ -25,7 +27,7 @@ export async function applyMigration(
         await client.query(up)
         logger.info('Migration applied');
         // 4. We add a record in the migration table
-        await migration.insertStatement(client);
+        await migration.insertStatement(client, migrationOptions);
 
         logger.info('Committing transaction');
         await client.query('COMMIT');

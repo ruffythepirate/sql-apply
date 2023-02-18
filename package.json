@@ -9,6 +9,7 @@
     "test": "npx jest",
     "test:it": "npx jest -c jest.it.config.js",
     "test:watch": "npx jest --watch",
+    "test:it:watch": "npx jest -c jest.it.config.js --watch",
     "test:coverage": "npx jest --coverage src && npm run test:badge",
     "test:badge": "npx lcov-badge-generator -o coverage/badge.svg coverage/lcov.info",
     "start:dev": "nodemon",

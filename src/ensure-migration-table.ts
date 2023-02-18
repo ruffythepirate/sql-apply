@@ -1,5 +1,6 @@
 import {Client} from "pg";
 import {MigrationDefinition} from "./migration/MigrationDefinition";
+import {MigrationOptions} from "./options/MigrationOptions";
 const logger = require('./common/logger');
 
 export async function ensureDatabaseExists(client: Client, databaseName: string): Promise<void> {
@@ -11,9 +12,10 @@ export async function ensureDatabaseExists(client: Client, databaseName: string)
     }
 }
 
-export async function ensureMigrationTable(client: Client): Promise<void> {
+export async function ensureMigrationTable(client: Client, migrationOptions: MigrationOptions): Promise<void> {
     logger.info('Ensuring migration table exists');
-    await client.query(`CREATE TABLE IF NOT EXISTS migrations (
+    await client.query(`CREATE SCHEMA IF NOT EXISTS ${migrationOptions.migrationTableSchema};`);
+    await client.query(`CREATE TABLE IF NOT EXISTS ${migrationOptions.migrationTableSchema}.${migrationOptions.migrationTable} (
         id SERIAL PRIMARY KEY,
         version VARCHAR(255) NOT NULL,
         description VARCHAR ( 255 ) NOT NULL, 
@@ -21,8 +23,8 @@ export async function ensureMigrationTable(client: Client): Promise<void> {
     logger.info('Migration table now exists');
 }
 
-export async function getMigrationsDoneInDB(client: Client): Promise<MigrationDefinition[]> {
+export async function getMigrationsDoneInDB(client: Client, migrationOptions: MigrationOptions): Promise<MigrationDefinition[]> {
     const query = await client.query(`SELECT *
-                               FROM migrations;`)
+                               FROM ${migrationOptions.migrationTableSchema}.${migrationOptions.migrationTable};`)
     return query.rows.map(row => new MigrationDefinition('', row.version, row.description));
 }

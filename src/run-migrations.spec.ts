@@ -3,6 +3,7 @@ import {ensureDatabaseExists, getMigrationsDoneInDB} from "./ensure-migration-ta
 import {findMigrationsRelativeToCwd} from "./migration/migration-finder";
 import {MigrationDefinition} from './migration/MigrationDefinition';
 import {applyMigration} from './migration/apply-migration';
+import {populateDefaultOptions} from './options/populate-default-options';
 
 jest.mock('./ensure-migration-table', () => ({
   ensureDatabaseExists: jest.fn(),
@@ -32,8 +33,8 @@ describe('runMigrations', () => {
   });
 
   it('should ensure database exists', async () => {
-    await runMigrations(client, 'test');
-    expect(ensureDatabaseExists).toHaveBeenCalledWith(client, 'test');
+    await runMigrations(client);
+    expect(ensureDatabaseExists).toHaveBeenCalledWith(client, 'postgres');
   });
 
   it('should throw if name of migrations have changed', async () => {
@@ -44,7 +45,7 @@ describe('runMigrations', () => {
       new MigrationDefinition('', '1', 'test_changed'),
     ]);
 
-    await expect(runMigrations(client, 'test')).rejects.toThrowError();
+    await expect(runMigrations(client)).rejects.toThrowError();
   });
 
   it('should throw if name of migrations have been removed', async () => {
@@ -53,12 +54,12 @@ describe('runMigrations', () => {
     ]);
     (findMigrationsRelativeToCwd as jest.Mock).mockResolvedValueOnce([]);
 
-    await expect(runMigrations(client, 'test')).rejects.toThrowError();
+    await expect(runMigrations(client)).rejects.toThrowError();
   });
 
   it('should apply migrations', async () => {
-    await runMigrations(client, 'test');
-    expect(applyMigration).toHaveBeenCalledWith(new MigrationDefinition('', '1', 'test'), client);
+    await runMigrations(client);
+    expect(applyMigration).toHaveBeenCalledWith(new MigrationDefinition('', '1', 'test'), client, populateDefaultOptions({}));
   });
 
 });

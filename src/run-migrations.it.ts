@@ -1,6 +1,7 @@
 import { Client } from "pg";
 import { runMigrations } from "./run-migrations";
 import { GenericContainer, StartedTestContainer } from "testcontainers";
+import {populateDefaultOptions} from "./options/populate-default-options";
 
 describe("Flyway Migration", () => {
   let client: Client;
@@ -35,9 +36,17 @@ describe("Flyway Migration", () => {
   });
 
   it("creates the Persons table", async () => {
-    await runMigrations(client, 'postgres', ['example-migrations/dev']);
+    await runMigrations(client, ['example-migrations/dev']);
 
     const result = await client.query("SELECT * FROM information_schema.tables where table_name = 'persons'");
+    expect(result.rows.length).toBe(1);
+  });
+
+  it("creates the Persons table with custom schema", async () => {
+    const options = populateDefaultOptions({ migrationTableSchema: 'test', migrationTable: 'testmigrations' });
+    await runMigrations(client, ['example-migrations/custom'], options);
+
+    const result = await client.query("SELECT * FROM information_schema.tables where table_name = 'custom_persons'");
     expect(result.rows.length).toBe(1);
   });
 });

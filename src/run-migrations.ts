@@ -3,16 +3,19 @@ import {ensureDatabaseExists, ensureMigrationTable, getMigrationsDoneInDB} from 
 import {applyMigration} from "./migration/apply-migration";
 import {findMigrationsRelativeToCwd} from "./migration/migration-finder";
 import {MigrationDefinition} from "./migration/MigrationDefinition";
+import {MigrationOptions} from "./options/MigrationOptions";
+import {populateDefaultOptions} from "./options/populate-default-options";
 
 /**
  * Runs all the migrations in the defined relative path to current working directory. 
  * Default value and convention is for this path to be sql/migrations, but it can be changed.
  */
-export async function runMigrations(client: Client, databaseName: string, migrationsPath: string[] = ["sql/migrations"]) {
-  await ensureDatabaseExists(client, databaseName);
-  await ensureMigrationTable(client);
+export async function runMigrations(client: Client, migrationsPath: string[] = ["sql/migrations"], migrationOptions: MigrationOptions = {}) {
+  const migrationOptionsWithDefaults = populateDefaultOptions(migrationOptions);
+  await ensureDatabaseExists(client, migrationOptionsWithDefaults.databaseName!);
+  await ensureMigrationTable(client, migrationOptionsWithDefaults);
 
-  const migrationsInDb = await getMigrationsDoneInDB(client)
+  const migrationsInDb = await getMigrationsDoneInDB(client, migrationOptionsWithDefaults);
   const migrationsScripts = await findMigrationsRelativeToCwd(migrationsPath);
 
   console.log('migrations scripts found', migrationsScripts);
@@ -22,7 +25,7 @@ export async function runMigrations(client: Client, databaseName: string, migrat
   const migrationsToPerform = migrationsScripts.filter(m => migrationsInDb.find(migration => migration.version === m.version) === undefined);
 
   for (const migration of migrationsToPerform) {
-    await applyMigration(migration, client)
+    await applyMigration(migration, client, migrationOptionsWithDefaults);
   }
 }
 
