@@ -1,4 +1,4 @@
-const logger = require('../common/logger');
+import {logger} from '../common/logger';
 import {Client} from 'pg';
 import {MigrationOptions} from '../options/MigrationOptions';
 import {MigrationDefinition} from "./MigrationDefinition";

@@ -1,5 +1,6 @@
 import {Client} from "pg";
-import {ensureDatabaseExists, ensureMigrationTable, getMigrationsDoneInDB} from "./ensure-migration-table";
+import {ensureDatabaseExists} from "./ensure-migration-table";
+import {ensureMigrationTable, getMigrationsDoneInDB} from "./migration/MigrationDefinition";
 import {applyMigration} from "./migration/apply-migration";
 import {findMigrationsRelativeToCwd} from "./migration/migration-finder";
 import {MigrationDefinition} from "./migration/MigrationDefinition";

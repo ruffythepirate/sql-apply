@@ -1,5 +1,6 @@
 import { runMigrations } from './run-migrations';
-import {ensureDatabaseExists, getMigrationsDoneInDB} from "./ensure-migration-table";
+import {ensureDatabaseExists} from "./ensure-migration-table";
+import { getMigrationsDoneInDB } from './migration/MigrationDefinition';
 import {findMigrationsRelativeToCwd} from "./migration/migration-finder";
 import {MigrationDefinition} from './migration/MigrationDefinition';
 import {applyMigration} from './migration/apply-migration';
@@ -7,12 +8,16 @@ import {populateDefaultOptions} from './options/populate-default-options';
 
 jest.mock('./ensure-migration-table', () => ({
   ensureDatabaseExists: jest.fn(),
-  ensureMigrationTable: jest.fn(),
-  getMigrationsDoneInDB: jest.fn(),
 }));
 
 jest.mock('./migration/migration-finder', () => ({
   findMigrationsRelativeToCwd: jest.fn(),
+}));
+
+jest.mock('./migration/MigrationDefinition', () => ({
+  ...jest.requireActual('./migration/MigrationDefinition'),
+  getMigrationsDoneInDB: jest.fn(),
+  ensureMigrationTable: jest.fn(),
 }));
 
 jest.mock('./migration/apply-migration', () => ({

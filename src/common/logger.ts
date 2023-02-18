@@ -1,3 +1,3 @@
 const pino = require('pino');
 
-module.exports = pino({});
+export const logger = pino({});
