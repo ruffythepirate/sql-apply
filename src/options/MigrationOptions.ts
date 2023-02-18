@@ -11,4 +11,8 @@ export interface MigrationOptions {
      * The name of the database where the migration table is located. Default value is postgres.
      */
     databaseName?: string;
+    /**
+     * The timeout in seconds for the migration table lock. Default value is 60.
+     */
+    timeoutInSeconds?: number;
 }
