@@ -1,6 +1,6 @@
 {
   "name": "sql-apply",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "bin": {
     "sql-apply": "build/bin/execute-cli.js"
   },
@@ -19,7 +19,7 @@
     "start": "node run build && node build",
     "lint": "npx eslint . --ext .ts",
     "lint:fix": "npx eslint . --ext .ts --fix",
-    "build": "npx rimraf build && npx tsc"
+    "build": "npx rimraf build && ./build.sh"
   },
   "author": "Johan Ablett-Karlsson",
   "license": "MIT",
