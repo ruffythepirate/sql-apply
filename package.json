@@ -1,6 +1,6 @@
 {
   "name": "sql-apply",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "This library performs flyway migrations on a postgres database without using external tools.",
   "main": "build/index.js",
   "repository": "https://github.com/ruffythepirate/sql-apply",

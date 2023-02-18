@@ -20,7 +20,12 @@
 </a>
 <p>This project aims at doing what the already existing <a href="https://flywaydb.org/documentation/">flyway</a> project is doing in the JVM world. It allows you to define one or multiple directories where you can create SQL files. Upon applying these files the library will check if the files have already been applied before (by looking into a migrations table in the DB). If they have not yet been applied they will be executed sequantially.</p>
 <p>There are already other libraries available for Node that helps you with performing DB migrations, why create a new one? Because I want a library that exists that allows you to write the migration scripts in pure SQL (no need for every function / feature in SQL to get a corresponding translation written in JS). I also want the migrations to be executable from code. This way it&#39;s very low effort to making sure that all environments (local / staging / prod) are all being kept up to date.</p>
-<p>Is this difficult? I don&#39;t know, perhaps it is. We&#39;ll find out. At least I&#39;ll start and see where I land.</p>
+<p>Is this difficult? I don&#39;t know, perhaps it is. We&#39;ll find out. At least I&#39;ll start and see where I land. This is still a young project, so don&#39;t hesitate to report Issues if you find them or to come with suggestion on how this could be done better. As a first step it&#39;s expected to support postgres, in later stages there&#39;s no reason why functionality can&#39;t be extended to support other SQL databases.</p>
+
+<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+  <h2>Installation</h2>
+</a>
+<p>This project is published at npmjs <a href="https://www.npmjs.com/package/sql-apply">here</a>. You can install it using <code>npm i -S sql-apply</code>.</p>
 
 <a href="#limitations" id="limitations" style="color: inherit; text-decoration: none;">
   <h2>Limitations</h2>
@@ -37,6 +42,7 @@
 <li>Ensuring that scripts are applied in an ordered manner according to naming convention.</li>
 <li>Migrations scripts will be written in SQL.</li>
 </ul>
+<p>For full information please refer to the <a href="https://ruffythepirate.github.io/sql-apply/">API Documentation</a>.</p>
 
 <a href="#conventions" id="conventions" style="color: inherit; text-decoration: none;">
   <h2>Conventions</h2>
@@ -63,18 +69,6 @@
 <li>Node 11 or higher</li>
 <li>npm</li>
 <li>Postgres</li>
-</ul>
-
-<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
-  <h2>Usage</h2>
-</a>
-<p>If you don&#39;t already have Postgres running locally:</p>
-<ul>
-<li>run <code>docker-compose up</code> in the root folder.</li>
-</ul>
-<p>Then run:</p>
-<ul>
-<li>npm run start:dev</li>
 </ul>
 
 <a href="#license" id="license" style="color: inherit; text-decoration: none;">
