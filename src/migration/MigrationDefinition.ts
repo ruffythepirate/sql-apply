@@ -58,6 +58,12 @@ export async function ensureMigrationTable(client: Client, migrationOptions: Mig
         version VARCHAR(255) NOT NULL UNIQUE,
         description VARCHAR ( 255 ) NOT NULL, 
         run_on TIMESTAMP NOT NULL );`)
+
+    await client.query(`ALTER TABLE ${migrationOptions.migrationTableSchema}.${migrationOptions.migrationTable} DROP CONSTRAINT IF EXISTS ${migrationOptions.migrationTable}_version_key;`)
+    await client.query(`ALTER TABLE ${migrationOptions.migrationTableSchema}.${migrationOptions.migrationTable} ADD CONSTRAINT ${migrationOptions.migrationTable}_version_key UNIQUE (version);`)
+
+    await client.query(`ALTER TABLE  ${migrationOptions.migrationTableSchema}.${migrationOptions.migrationTable} ADD COLUMN IF NOT EXISTS migration_file_hash VARCHAR(64);`);
+
     logger.info('Migration table now exists');
 }
 

@@ -58,7 +58,7 @@ it('should ensure that migration table exists', async () => {
         query: jest.fn().mockResolvedValue({rows: []})
     } as unknown as Client;
     await ensureMigrationTable(client, populateDefaultOptions({}));
-    expect(client.query).toBeCalledTimes(2);
+    expect(client.query).toBeCalledTimes(5);
 });
 
 it('should get done migrations', async () => {
