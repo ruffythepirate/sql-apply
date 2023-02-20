@@ -1,4 +1,4 @@
-import {MigrationDefinition} from "./MigrationDefinition";
+import {ensureMigrationTable, getMigrationsDoneInDB, MigrationDefinition} from "./MigrationDefinition";
 import {Client} from "pg";
 
 import * as fs from "fs";
@@ -49,4 +49,24 @@ it('should perform insert statement', () => {
     } as unknown as Client;
     migration.insertStatement(client, populateDefaultOptions({}));
     expect(client.query).toBeCalledTimes(1);
+});
+
+it('should ensure that migration table exists', async () => {
+    const path = "src/migration/V1__Create_table.sql"
+    const migration = MigrationDefinition.parseMigration(path);
+    const client = {
+        query: jest.fn().mockResolvedValue({rows: []})
+    } as unknown as Client;
+    await ensureMigrationTable(client, populateDefaultOptions({}));
+    expect(client.query).toBeCalledTimes(2);
+});
+
+it('should get done migrations', async () => {
+    const path = "src/migration/V1__Create_table.sql"
+    const migration = MigrationDefinition.parseMigration(path);
+    const client = {
+        query: jest.fn().mockResolvedValue({rows: [migration]})
+    } as unknown as Client;
+    const doneMigrations = await getMigrationsDoneInDB(client, populateDefaultOptions({}));
+    expect(doneMigrations.length).toEqual(1);
 });
