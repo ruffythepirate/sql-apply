@@ -4,9 +4,6 @@ import yargs from 'yargs';
 import {parseCliArgs, withDefaultOptions, withEnvironmentOptions} from './CliOptions';
 import {performCliMigration} from './perform-cli-migration';
 
-console.log('Running migrations...');
-console.log(process.argv);
-
 const args = yargs(process.argv.slice(2))
   .command('migrate', 'Applies migration scripts to a database')
   .option('migrationsDir', {
@@ -46,19 +43,9 @@ const args = yargs(process.argv.slice(2))
     default: 'postgres',
   })
   .argv;
-console.log('Parsed args:', args);
 
 let cliOptions = parseCliArgs(args);
 cliOptions = withEnvironmentOptions(cliOptions, process.env);
 cliOptions = withDefaultOptions(cliOptions);
 
-console.log('Running migrations with options:', cliOptions);
 performCliMigration(cliOptions);
-
-
-  
-
-
-
-
-
