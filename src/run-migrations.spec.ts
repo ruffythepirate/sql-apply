@@ -67,5 +67,19 @@ describe('runMigrations', () => {
     expect(applyMigration).toHaveBeenCalledWith(new MigrationDefinition('', '1', 'test'), client, populateDefaultOptions({}));
   });
 
+  it('should apply migrations with timeout', async () => {
+    await runMigrations(client, [], { timeoutInSeconds: 5 });
+    expect(applyMigration).toHaveBeenCalledWith(new MigrationDefinition('', '1', 'test'), client, populateDefaultOptions({}));
+  });
+
+  it('should throw timeout error if migration takes too long', async () => {
+    let timeoutId: NodeJS.Timeout | undefined;
+    const longTimePromise = new Promise(resolve => {
+      timeoutId = setTimeout(resolve, 10000)
+    });
+    (applyMigration as jest.Mock).mockImplementation(() => longTimePromise);
+    await expect(runMigrations(client, [], { timeoutInSeconds: 1 })).rejects.toThrowError();
+    clearTimeout(timeoutId!);
+  });
 });
 

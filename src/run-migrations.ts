@@ -12,6 +12,29 @@ import {populateDefaultOptions} from "./options/populate-default-options";
  * Default value and convention is for this path to be sql/migrations, but it can be changed.
  */
 export async function runMigrations(client: Client, migrationsPath: string[] = ["sql/migrations"], migrationOptions: MigrationOptions = {}) {
+  if(migrationOptions.timeoutInSeconds) {
+    return await withTimeout(runMigrationsInternal(client, migrationsPath, migrationOptions), migrationOptions.timeoutInSeconds);
+  } else {
+    await runMigrationsInternal(client, migrationsPath, migrationOptions);
+  }
+}
+
+function withTimeout<T>(promise: Promise<T>, timeoutInSeconds: number): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      reject(new Error(`Timeout of ${timeoutInSeconds} seconds exceeded`));
+    }, timeoutInSeconds * 1000);
+    promise.then((result) => {
+      clearTimeout(timeout);
+      resolve(result);
+    }, (error) => {
+      clearTimeout(timeout);
+      reject(error);
+    });
+  });
+}
+
+async function runMigrationsInternal(client: Client, migrationsPath: string[], migrationOptions: MigrationOptions = {}) {
   const migrationOptionsWithDefaults = populateDefaultOptions(migrationOptions);
   await ensureDatabaseExists(client, migrationOptionsWithDefaults.databaseName!);
   await ensureMigrationTable(client, migrationOptionsWithDefaults);
@@ -28,6 +51,7 @@ export async function runMigrations(client: Client, migrationsPath: string[] = [
   for (const migration of migrationsToPerform) {
     await applyMigration(migration, client, migrationOptionsWithDefaults);
   }
+
 }
 
 
