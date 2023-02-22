@@ -1,6 +1,6 @@
 import {Client} from "pg";
 import {GenericContainer, StartedTestContainer} from "testcontainers";
-import {ensureMigrationTable} from "./MigrationDefinition";
+import {ensureMigrationTable} from "./MigrationPointer";
 import {populateDefaultOptions} from "../options/populate-default-options";
 
 describe("Ensure migration table", () => {

@@ -1,5 +1,5 @@
 import {Client} from "pg";
-import {MigrationDefinition} from "./migration/MigrationDefinition";
+import {MigrationPointer} from "./migration/MigrationPointer";
 import {MigrationOptions} from "./options/MigrationOptions";
 const logger = require('./common/logger');
 

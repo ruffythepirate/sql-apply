@@ -1,9 +1,9 @@
 import {Client} from "pg";
 import {ensureDatabaseExists} from "./ensure-migration-table";
-import {ensureMigrationTable, getMigrationsDoneInDB} from "./migration/MigrationDefinition";
+import {ensureMigrationTable, getMigrationsDoneInDB} from "./migration/MigrationPointer";
 import {applyMigration} from "./migration/apply-migration";
 import {findMigrationsRelativeToCwd} from "./migration/migration-finder";
-import {MigrationDefinition} from "./migration/MigrationDefinition";
+import {MigrationPointer} from "./migration/MigrationPointer";
 import {MigrationOptions} from "./options/MigrationOptions";
 import {populateDefaultOptions} from "./options/populate-default-options";
 
@@ -55,7 +55,7 @@ async function runMigrationsInternal(client: Client, migrationsPath: string[], m
 }
 
 
-function ensureMigrationsHaventChanged(migrationsInDb: MigrationDefinition[], migrationsToPerform: MigrationDefinition[]) {
+function ensureMigrationsHaventChanged(migrationsInDb: MigrationPointer[], migrationsToPerform: MigrationPointer[]) {
   migrationsInDb.forEach(migration => {
     const migrationToPerform = migrationsToPerform.find(m => m.version === migration.version);
     if (migrationToPerform === undefined) {

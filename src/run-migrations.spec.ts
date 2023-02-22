@@ -1,8 +1,8 @@
 import { runMigrations } from './run-migrations';
 import {ensureDatabaseExists} from "./ensure-migration-table";
-import { getMigrationsDoneInDB } from './migration/MigrationDefinition';
+import { getMigrationsDoneInDB } from './migration/MigrationPointer';
 import {findMigrationsRelativeToCwd} from "./migration/migration-finder";
-import {MigrationDefinition} from './migration/MigrationDefinition';
+import {MigrationPointer} from './migration/MigrationPointer';
 import {applyMigration} from './migration/apply-migration';
 import {populateDefaultOptions} from './options/populate-default-options';
 
@@ -14,8 +14,8 @@ jest.mock('./migration/migration-finder', () => ({
   findMigrationsRelativeToCwd: jest.fn(),
 }));
 
-jest.mock('./migration/MigrationDefinition', () => ({
-  ...jest.requireActual('./migration/MigrationDefinition'),
+jest.mock('./migration/MigrationPointer', () => ({
+  ...jest.requireActual('./migration/MigrationPointer'),
   getMigrationsDoneInDB: jest.fn(),
   ensureMigrationTable: jest.fn(),
 }));
@@ -33,7 +33,7 @@ describe('runMigrations', () => {
   beforeEach(() => {
     (getMigrationsDoneInDB as jest.Mock).mockResolvedValue([]);
     (findMigrationsRelativeToCwd as jest.Mock).mockResolvedValue([
-      new MigrationDefinition('', '1', 'test'),
+      new MigrationPointer('', '1', 'test'),
     ]);
   });
 
@@ -44,10 +44,10 @@ describe('runMigrations', () => {
 
   it('should throw if name of migrations have changed', async () => {
     (getMigrationsDoneInDB as jest.Mock).mockResolvedValueOnce([
-      new MigrationDefinition('', '1', 'test'),
+      new MigrationPointer('', '1', 'test'),
     ]);
     (findMigrationsRelativeToCwd as jest.Mock).mockResolvedValueOnce([
-      new MigrationDefinition('', '1', 'test_changed'),
+      new MigrationPointer('', '1', 'test_changed'),
     ]);
 
     await expect(runMigrations(client)).rejects.toThrowError();
@@ -55,7 +55,7 @@ describe('runMigrations', () => {
 
   it('should throw if name of migrations have been removed', async () => {
     (getMigrationsDoneInDB as jest.Mock).mockResolvedValueOnce([
-      new MigrationDefinition('', '1', 'test'),
+      new MigrationPointer('', '1', 'test'),
     ]);
     (findMigrationsRelativeToCwd as jest.Mock).mockResolvedValueOnce([]);
 
@@ -64,12 +64,12 @@ describe('runMigrations', () => {
 
   it('should apply migrations', async () => {
     await runMigrations(client);
-    expect(applyMigration).toHaveBeenCalledWith(new MigrationDefinition('', '1', 'test'), client, populateDefaultOptions({}));
+    expect(applyMigration).toHaveBeenCalledWith(new MigrationPointer('', '1', 'test'), client, populateDefaultOptions({}));
   });
 
   it('should apply migrations with timeout', async () => {
     await runMigrations(client, [], { timeoutInSeconds: 5 });
-    expect(applyMigration).toHaveBeenCalledWith(new MigrationDefinition('', '1', 'test'), client, populateDefaultOptions({}));
+    expect(applyMigration).toHaveBeenCalledWith(new MigrationPointer('', '1', 'test'), client, populateDefaultOptions({}));
   });
 
   it('should throw timeout error if migration takes too long', async () => {

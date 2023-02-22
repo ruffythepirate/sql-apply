@@ -3,12 +3,12 @@ import {
   GenericContainer
 } from "testcontainers";
 
-import { MigrationDefinition } from "./MigrationDefinition";
+import { MigrationPointer } from "./MigrationPointer";
 import {Client} from "pg";
 
 import { applyMigration } from "./apply-migration";
 import {populateDefaultOptions} from "../options/populate-default-options";
-import {ensureMigrationTable} from "./MigrationDefinition";
+import {ensureMigrationTable} from "./MigrationPointer";
 
 describe("Apply migration", () => {
     const logger = require("../common/logger");
@@ -48,7 +48,7 @@ describe("Apply migration", () => {
     it('should apply migration', async () => {
         const migrationOptions = populateDefaultOptions({});
 
-        const migration = MigrationDefinition.parseMigration("./example-migrations/dev/V1__Create_table.sql")
+        const migration = MigrationPointer.parseMigration("./example-migrations/dev/V1__Create_table.sql")
         await applyMigration(migration, client, migrationOptions);
 
         const result = await client.query('SELECT * FROM migrations');
@@ -69,7 +69,7 @@ describe("Apply migration", () => {
 
         await ensureMigrationTable(client, migrationOptions);
 
-        const migration = MigrationDefinition.parseMigration("./example-migrations/custom/V1__Create_custom.sql")
+        const migration = MigrationPointer.parseMigration("./example-migrations/custom/V1__Create_custom.sql")
         await applyMigration(migration, client, migrationOptions);
 
         const result = await client.query('SELECT * FROM test.testmigrations');

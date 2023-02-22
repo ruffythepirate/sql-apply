@@ -1,5 +1,5 @@
 import {findMigrationsRelativeToCwd} from "./migration-finder";
-import {MigrationDefinition} from "./MigrationDefinition";
+import {MigrationPointer} from "./MigrationPointer";
 import * as fs from "fs";
 
 // jest.mock("fs")
@@ -18,9 +18,9 @@ it('should return all migration files in target folder', async () => {
     )
 
     await expect(findMigrationsRelativeToCwd(["src/migration"])).resolves.toEqual([
-        new MigrationDefinition(absolutePath("src/migration/V1__Create_table.sql"), '1', "Create_table"),
-        new MigrationDefinition(absolutePath("src/migration/V2__Create_table.sql"), '2', "Create_table"),
-        new MigrationDefinition(absolutePath("src/migration/V3__Create_table.sql"), '3', "Create_table"),
+        new MigrationPointer(absolutePath("src/migration/V1__Create_table.sql"), '1', "Create_table"),
+        new MigrationPointer(absolutePath("src/migration/V2__Create_table.sql"), '2', "Create_table"),
+        new MigrationPointer(absolutePath("src/migration/V3__Create_table.sql"), '3', "Create_table"),
         ]);
 })
 
@@ -34,9 +34,9 @@ it('return migrations sorted by version', async () => {
     )
 
     await expect(findMigrationsRelativeToCwd(["src"])).resolves.toEqual([
-        new MigrationDefinition(absolutePath("src/V1__Create_table.sql"), '1', "Create_table"),
-        new MigrationDefinition(absolutePath("src/V2__Create_table.sql"), '2', "Create_table"),
-        new MigrationDefinition(absolutePath("src/V3__Create_table.sql"), '3', "Create_table"),
+        new MigrationPointer(absolutePath("src/V1__Create_table.sql"), '1', "Create_table"),
+        new MigrationPointer(absolutePath("src/V2__Create_table.sql"), '2', "Create_table"),
+        new MigrationPointer(absolutePath("src/V3__Create_table.sql"), '3', "Create_table"),
         ]);
 })
 

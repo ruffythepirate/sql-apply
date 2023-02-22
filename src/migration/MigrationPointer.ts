@@ -6,7 +6,7 @@ import * as fs from "fs";
 import {Client} from "pg";
 import {MigrationOptions} from "../options/MigrationOptions";
 
-export class MigrationDefinition {
+export class MigrationPointer {
     path: string;
     version: string;
     description: string;
@@ -17,7 +17,7 @@ export class MigrationDefinition {
         this.description = description;
     }
 
-    static parseMigration(path: string): MigrationDefinition {
+    static parseMigration(path: string): MigrationPointer {
         const filename = path.split("/").pop();
         if(filename === undefined || filename === '') {
            throw new Error(`Invalid path ${path}`);
@@ -26,7 +26,7 @@ export class MigrationDefinition {
             throw new Error(`Invalid migration name: ${filename}`);
         }
         const [version, description] = filename.split("__");
-        return new MigrationDefinition(path, version.substring(1), removeSuffix(description));
+        return new MigrationPointer(path, version.substring(1), removeSuffix(description));
     }
 
     async verifyExists(): Promise<boolean> {
@@ -67,10 +67,10 @@ export async function ensureMigrationTable(client: Client, migrationOptions: Mig
     logger.info('Migration table now exists');
 }
 
-export async function getMigrationsDoneInDB(client: Client, migrationOptions: MigrationOptions): Promise<MigrationDefinition[]> {
+export async function getMigrationsDoneInDB(client: Client, migrationOptions: MigrationOptions): Promise<MigrationPointer[]> {
     const query = await client.query(`SELECT *
                                FROM ${migrationOptions.migrationTableSchema}.${migrationOptions.migrationTable};`)
-    return query.rows.map(row => new MigrationDefinition('', row.version, row.description));
+    return query.rows.map(row => new MigrationPointer('', row.version, row.description));
 }
 
 function removeSuffix(filename: string): string {

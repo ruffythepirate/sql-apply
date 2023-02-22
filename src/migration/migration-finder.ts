@@ -1,4 +1,4 @@
-import {MigrationDefinition} from "./MigrationDefinition";
+import {MigrationPointer} from "./MigrationPointer";
 import * as fs from "fs";
 
 
@@ -6,7 +6,7 @@ import * as fs from "fs";
  * Finds all of the migrations in the given paths. The paths are relative to the current working directory and should not start with a /.
  * For example 'sql/migrations' is a valid path, but '/sql/migrations' is not.
  */
-export async function findMigrationsRelativeToCwd(paths: string[]): Promise<MigrationDefinition[]> {
+export async function findMigrationsRelativeToCwd(paths: string[]): Promise<MigrationPointer[]> {
     
     const absolutePaths = paths.map(path => `${process.cwd()}/${path}`);
 
@@ -16,7 +16,7 @@ export async function findMigrationsRelativeToCwd(paths: string[]): Promise<Migr
 /**
  * Finds all of the migrations in the given paths. The paths are absolute and should start with a /.
  */
-export async function findMigrationsAbsolutPaths(paths: string[]): Promise<MigrationDefinition[]> {
+export async function findMigrationsAbsolutPaths(paths: string[]): Promise<MigrationPointer[]> {
     if (paths.length === 0) {
         throw new Error("No path provided");
     }
@@ -24,7 +24,7 @@ export async function findMigrationsAbsolutPaths(paths: string[]): Promise<Migra
 
     return files
         .flat()
-        .map(file => MigrationDefinition.parseMigration(file))
+        .map(file => MigrationPointer.parseMigration(file))
         .sort((a, b) => a.version.localeCompare(b.version));
 }
 

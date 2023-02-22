@@ -1,4 +1,4 @@
-import { ensureMigrationTable } from "./MigrationDefinition";
+import { ensureMigrationTable } from "./MigrationPointer";
 import {Client} from 'pg';
 import { populateDefaultOptions } from "../options/populate-default-options";
 

@@ -1,11 +1,11 @@
 import {logger} from '../common/logger';
 import {Client} from 'pg';
 import {MigrationOptions} from '../options/MigrationOptions';
-import {MigrationDefinition} from "./MigrationDefinition";
+import {MigrationPointer} from "./MigrationPointer";
 import {setup} from "./setup";
 
 export async function applyMigration(
-    migration: MigrationDefinition,
+    migration: MigrationPointer,
     client: Client,
     migrationOptions: MigrationOptions
 ): Promise<void> {
