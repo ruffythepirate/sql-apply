@@ -9,6 +9,13 @@
   "main": "build/index.js",
   "repository": "https://github.com/ruffythepirate/sql-apply",
   "homepage": "https://ruffythepirate.github.io/sql-apply/",
+  "keywords": [
+    "sql",
+    "postgres",
+    "flyway",
+    "migration",
+    "database"
+  ],
   "scripts": {
     "docs": "npx typedoc src",
     "test": "npx jest",
