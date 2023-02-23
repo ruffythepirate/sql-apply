@@ -1,11 +1,12 @@
 import {logger} from '../common/logger';
 import {Client} from 'pg';
 import {MigrationOptions} from '../options/MigrationOptions';
-import {MigrationPointer} from "./MigrationPointer";
+import {createMigration, MigrationPointer} from "./MigrationPointer";
 import {setup} from "./setup";
+import {insertMigration} from './db/Migration';
 
 export async function applyMigration(
-    migration: MigrationPointer,
+    migrationPointer: MigrationPointer,
     client: Client,
     migrationOptions: MigrationOptions
 ): Promise<void> {
@@ -13,9 +14,9 @@ export async function applyMigration(
     try {
         await setup(client);
 
-        logger.info(`Applying migration ${migration.version} - ${migration.description}. File path: ${migration.path}`);
-        // 1. We read the migration file
-        const up = await migration.getContent();
+        logger.info(`Applying migrationPointer ${migrationPointer.version} - ${migrationPointer.description}. File path: ${migrationPointer.path}`);
+        // 1. We read the migrationPointer file
+        const up = await migrationPointer.getContent();
         // 2. We create a new transaction
         client.query('BEGIN');
         
@@ -23,11 +24,13 @@ export async function applyMigration(
         logger.info(`Getting ready to apply script ${up}`);
 
 
-        // 3. We execute the migration
+        // 3. We execute the migrationPointer
         await client.query(up)
         logger.info('Migration applied');
-        // 4. We add a record in the migration table
-        await migration.insertStatement(client, migrationOptions);
+
+        // 4. We add a record in the migrationPointer table
+        const migration = await createMigration(migrationPointer);
+        await insertMigration(client, migration, migrationOptions);
 
         logger.info('Committing transaction');
         await client.query('COMMIT');

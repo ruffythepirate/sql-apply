@@ -1,8 +1,6 @@
-import {ensureMigrationTable, getMigrationsDoneInDB, MigrationPointer} from "./MigrationPointer";
-import {Client} from "pg";
-
 import * as fs from "fs";
-import {populateDefaultOptions} from "../options/populate-default-options";
+import {Migration} from "./db/Migration";
+import {createMigration, MigrationPointer} from "./MigrationPointer";
 
 it(`should throw when path is invalid`, () => {
     expect(() => MigrationPointer.parseMigration("")).toThrowError("Invalid path");
@@ -41,32 +39,13 @@ it('should return content of file', () => {
     expect(migration.getContent()).resolves.toBe("content");
 })
 
-it('should perform insert statement', () => {
-    const path = "src/migration/V1__Create_table.sql"
-    const migration = MigrationPointer.parseMigration(path);
-    const client = {
-        query: jest.fn()
-    } as unknown as Client;
-    migration.insertStatement(client, populateDefaultOptions({}));
-    expect(client.query).toBeCalledTimes(1);
-});
+it('should convert a migration pointer to a migration', async () => {
+    const path = "example-migrations/dev/V1__Create_table.sql"
+    const pointer = MigrationPointer.parseMigration(path);
+    const migration = await createMigration(pointer);
 
-it('should ensure that migration table exists', async () => {
-    const path = "src/migration/V1__Create_table.sql"
-    const migration = MigrationPointer.parseMigration(path);
-    const client = {
-        query: jest.fn().mockResolvedValue({rows: []})
-    } as unknown as Client;
-    await ensureMigrationTable(client, populateDefaultOptions({}));
-    expect(client.query).toBeCalledTimes(5);
-});
-
-it('should get done migrations', async () => {
-    const path = "src/migration/V1__Create_table.sql"
-    const migration = MigrationPointer.parseMigration(path);
-    const client = {
-        query: jest.fn().mockResolvedValue({rows: [migration]})
-    } as unknown as Client;
-    const doneMigrations = await getMigrationsDoneInDB(client, populateDefaultOptions({}));
-    expect(doneMigrations.length).toEqual(1);
+    expect(migration).toMatchObject({
+        version: "1",
+        description: "Create_table",
+    });
 });

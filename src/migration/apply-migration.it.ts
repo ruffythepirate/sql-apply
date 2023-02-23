@@ -8,7 +8,7 @@ import {Client} from "pg";
 
 import { applyMigration } from "./apply-migration";
 import {populateDefaultOptions} from "../options/populate-default-options";
-import {ensureMigrationTable} from "./MigrationPointer";
+import {ensureMigrationTable} from "./db/Migration";
 
 describe("Apply migration", () => {
     const logger = require("../common/logger");
