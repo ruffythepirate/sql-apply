@@ -1,6 +1,6 @@
 {
   "name": "sql-apply",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "sideEffects": false,
   "bin": {
     "sql-apply": "build/bin/execute-cli.js"
