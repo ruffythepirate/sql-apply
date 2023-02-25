@@ -1,3 +1,5 @@
 const pino = require('pino');
 
-export const logger = pino({});
+export const logger = pino({
+  level: "error",
+});

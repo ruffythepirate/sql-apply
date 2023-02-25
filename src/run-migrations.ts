@@ -42,8 +42,6 @@ async function runMigrationsInternal(client: Client, migrationsPath: string[], m
   const migrationsInDb = await getMigrationsDoneInDB(client, migrationOptionsWithDefaults);
   const migrationsScripts = await findMigrationsRelativeToCwd(migrationsPath);
 
-  console.log('migrations scripts found', migrationsScripts);
-
   ensureMigrationsHaventChanged(migrationsInDb, migrationsScripts);
 
   const migrationsToPerform = migrationsScripts.filter(m => migrationsInDb.find(migration => migration.version === m.version) === undefined);

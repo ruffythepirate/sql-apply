@@ -17,7 +17,6 @@ export class Migration {
 
 export async function insertMigration(client: Client, migration: Migration, migrationOptions: MigrationOptions): Promise<void> {
         const tableFullName = `${migrationOptions.migrationTableSchema}.${migrationOptions.migrationTable}`;
-        console.log('inserting migration to table', tableFullName);
         await client.query(`INSERT INTO ${tableFullName} (version, description, run_on) VALUES ($1, $2, current_timestamp)`,
             [migration.version, migration.description]);
 }
