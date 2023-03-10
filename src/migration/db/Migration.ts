@@ -43,7 +43,3 @@ export async function getMigrationsDoneInDB(client: Client, migrationOptions: Mi
                                FROM ${migrationOptions.migrationTableSchema}.${migrationOptions.migrationTable};`);
     return query.rows.map(row => new Migration(row.id, row.version, row.description, row.migration_file_hash));
 }
-
-function removeSuffix(filename: string): string {
-    return filename.substring(0, filename.lastIndexOf("."));
-}

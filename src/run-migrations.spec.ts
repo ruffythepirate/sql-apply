@@ -68,6 +68,15 @@ describe('runMigrations', () => {
   });
 
   it('should apply migrations with timeout', async () => {
+    (getMigrationsDoneInDB as jest.Mock).mockResolvedValueOnce([
+      new MigrationPointer('', '1', 'test'),
+    ]);
+    (findMigrationsRelativeToCwd as jest.Mock).mockResolvedValueOnce([]);
+
+    await expect(runMigrations(client, [], {timeoutInSeconds:5})).rejects.toThrowError();
+  });
+
+  it('should handle error when apply migrations with timeout', async () => {
     await runMigrations(client, [], { timeoutInSeconds: 5 });
     expect(applyMigration).toHaveBeenCalledWith(new MigrationPointer('', '1', 'test'), client, populateDefaultOptions({}));
   });
